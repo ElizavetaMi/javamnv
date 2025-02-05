@@ -36,20 +36,34 @@ public class BonusServiceTest {
     }
 
     @Test
-    void shouldReturnZeroBonusForZeroAmount() {
+    void shouldCalculateForUnRegisteredAndUnderLimit() {
         BonusService service = new BonusService();
 
-        // Проверка для зарегистрированного клиента
-        long expected = 0; // бонус при сумме 0
-        long actual = service.calculate(0, true); // зарегистрированный клиент
+        // подготавливаем данные:
+        long amount = 1000;
+        boolean registered = false;
+        long expected = 10;
+
+        // вызываем целевой метод:
+        long actual = service.calculate(amount, registered);
+
+        // производим проверку (сравниваем ожидаемый и фактический):
         Assertions.assertEquals(expected, actual);
-
     }
+
     @Test
-    void shouldCalculateForRegisteredAndUnderLimitWithValidAmount() {
+    void shouldCalculateForUnRegisteredAndOverLimit() {
         BonusService service = new BonusService();
-        long expected = 300; // 10_000 * 3% = 300
-        long actual = service.calculate(10_000, true); // Зарегистрированный клиент
+
+        // подготавливаем данные:
+        long amount = 1_000_000;
+        boolean registered = false;
+        long expected = 500;
+
+        // вызываем целевой метод:
+        long actual = service.calculate(amount, registered);
+
+        // производим проверку (сравниваем ожидаемый и фактический):
         Assertions.assertEquals(expected, actual);
     }
 }
